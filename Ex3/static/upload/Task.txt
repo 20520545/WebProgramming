@@ -1,0 +1,11 @@
+To do at blockchain:
+
+Handle demonstration. Improving the project from existence
+To-do function: 
+Log out;  
+p2p content sharing (create a chat corner)
+Source:
+https://github.com/20520545/decentratwitter
+
+
+Doing fundamentals: Gaps; Motivation; Related Stakeholders; Solution architecture; 

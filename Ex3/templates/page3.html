@@ -1,0 +1,265 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Page3()
+{% endblock %}
+
+{% block body %}
+<div class="page_container">
+    <h2>
+        Danh sách sản phẩm 
+    </h2>
+    {% if not action %}
+    <form action="/page/3?action=create" method="post">
+        <button class="createBtn" type="submit">Create New</button>
+    </form>
+    <div class="item_lst">
+        <table style=" border-collapse: collapse; border-top: 1px solid gray; border-bottom: 1px solid gray;width: 100%;">
+            <tr>
+                <th style="width: 10%;">
+                    ID
+                </th>
+                <th>
+                    Product
+                </th>
+                <th>
+                    Price
+                </th>
+                <th>
+                    Condition
+                </th>
+                <th>
+                    Action
+                </th>
+
+            </tr>
+            {% for item in product %}
+            <tr style="border-top: 1px solid gray; border-bottom: 1px solid gray;">
+            <div style="display: flex ;flex-direction: row; ">
+                <td style="text-align: center; ">
+                        {{item.id}}
+                </td>
+                <td>
+                    <div style="display: flex; ">
+                        <img style="display: flex; flex:1; width: 40%; height: 80%; padding: 20px 0;" src="{{item.img}}" alt="product">
+                        <div style=" flex: 2; padding-left: 20px">
+                            <div style="color: red; padding-top: 30px; padding-right: 10px">
+                                <b>{{item.title}}</b>
+                            </div>
+                            <div style="color: gray; padding-right: 10px">
+                                <br>{{item.description}}
+                            </div>
+                        </div>
+                    </div> 
+                </td>
+                <td>
+                    <div class="item_price" style="flex-direction: row;display:inline-block; padding:10px">
+                        {{item.price}} VNĐ
+                    </div>
+                </td>
+                <td>
+                <div  class="item_number" style="flex-direction: row;display:inline-block; padding:10px">
+                    {% if item.number|int >0%}
+                    <div>
+                        <b>Available</b>
+                    </div>
+                    {% else %}
+                    <div style="color: red;">
+                        <b>Out of order</b>
+                    </div>
+                    {% endif %}
+                    <div style="text-align: center;">
+                        ({{item.number}})
+                    </div>
+                    
+                    
+                </div>
+                </td>
+                <td>
+                <form action="{{ url_for('page', page=3, action='edit', id=item.id) }}" method="post">
+                    {{ form.hidden_tag() }}
+                    <button  class="editBtn" type="submit">Edit</button>
+                </form>
+                </td>
+                <td>
+                    <form action="#" method="post">
+                    <button class="detailBtn" type="submit">Details</button>
+                </form>
+                </td>
+                <td>
+                <form action="{{ url_for('page', page=3, action='delete', id=item.id) }}" method="post">
+                    {{ form.hidden_tag() }}
+                    <button class="deleteBtn" type="submit">Delete</button>
+                </form>
+            </td>
+            </div>
+            </tr>
+            {% endfor %}
+            
+        </table>
+    </div>
+    {% elif action == "create" %}
+    <div>
+        <h3>Create Product</h3>
+        <form action="/page/3?action=create" method="post" enctype="multipart/form-data">
+            {{ form.hidden_tag() }}
+            <div class="form_container">
+            <table>
+                <tr>
+                    <td class="form_name">
+                        <label for="{{ form.id.id }}">Id</label> 
+                    </td>
+                    <td>
+                        {{ form.id }}
+                    </td>
+                </tr>
+                <tr>
+                    <td class="form_name">
+                        <label for="{{ form.title.id }}">Title</label> 
+                    </td>
+                    <td>
+                        {{ form.title }}
+                    </td>
+                </tr>
+                <tr>
+                    <td class="form_name">
+                        <label for="{{ form.description.id }}">Description</label> 
+                    </td>
+                    <td>
+                        {{ form.description}}
+                    </td>
+                </tr>
+                <tr>
+                    <td class="form_name">
+                        <label for="{{ form.image.id }}">Image</label> 
+                    </td>
+                    <td>
+                        {{ form.image }}
+                    </td>
+                </tr>
+                <tr>
+                    <td class="form_name">
+                        <label for="{{ form.price.id }}">Price</label> 
+                    </td>
+                    <td>
+                        {{ form.price }}
+                    </td>
+                </tr>
+                <tr>
+                    <td class="form_name">
+                        <label for="{{ form.number.id }}">Number</label>
+                    </td>
+                    <td>
+                        {{ form.number }}
+                    </td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>{{ form.submit }}</td>
+                </tr>
+            </table>
+            </div>
+            <div style="margin-top: 20px; padding: 10px">
+                <a href="/page/3">Return to list.</a>
+            </div>
+            </div>
+        </form>
+    </div>
+    {% elif action == "edit" %}
+    <div>
+        <b>Edit</b>
+        <form action="{{ url_for('page', page=3, action='edit', id=request.args.get('id')) }}" method="post" enctype="multipart/form-data">
+            {{ form.hidden_tag() }}
+            <div class="form_container">
+                <table>
+                    <tr>
+                        <td class="form_name">
+                            <label for="{{ form.id.id }}">Id</label> 
+                        </td>
+                        <td>
+                            <div style="border: solid black 1px; background-color: gray; text-align: center;">
+                                {{ request.args.get("id") }}
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="form_name">
+                            <label for="{{ form.title.id }}">Title</label> 
+                        </td>
+                        <td>
+                            {{ form.title }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="form_name">
+                            <label for="{{ form.description.id }}">Description</label> 
+                        </td>
+                        <td>
+                            {{ form.description }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="form_name">
+                            <label for="{{ form.image.id }}">Image</label> 
+                        </td>
+                        <td>
+                            {{ form.image }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="form_name">
+                            <label for="{{ form.price.id }}">Price</label> 
+                        </td>
+                        <td>
+                            {{ form.price }} 
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="form_name">
+                            <label for="{{ form.number.id }}">Number</label>
+                        </td>
+                        <td>
+                            {{ form.number }}
+                        </td>
+                    </tr>
+                    <tr>
+                        <td></td>
+                        <td>{{ form.submit }}</td>
+                    </tr>
+                </table>
+            </div>
+            <div style="margin-top: 20px; padding: 10px">
+                <a href="{{ url_for('page', page=3) }}">Return to list.</a>
+            </div>
+        </form>
+    </div>
+    {% if action == "details" %}
+    <h3>Product Details</h3>
+    <!-- Display details -->
+    <form method="get">
+        {{ form.hidden_tag() }}
+        <div class="form_container">
+            <table>
+                {% for field in form %}
+                    <tr>
+                        <td class="form_name">
+                            <label for="{{ field.id }}">{{ field.label.text }}</label> 
+                        </td>
+                        <td>
+                            {{ field() if field.name != 'return_to_list' else '' }}
+                        </td>
+                    </tr>
+                {% endfor %}
+                <tr>
+                    <td></td>
+                    <td>{{ form.return_to_list }}</td>
+                </tr>
+            </table>
+        </div>
+    </form>
+    {% endif %}
+    {% endif %}
+</div>
+
+{% endblock %}
+

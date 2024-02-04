@@ -1,0 +1,99 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Page2()
+{% endblock %}
+
+{% block body %}
+<div class="contact_container">
+    <div class="contact_info">
+        <h2 style="margin-bottom: 0;">
+            Thông tin liên hệ
+        </h2>
+        <p style="margin-bottom: 0;">
+            Trường Đại học Công nghệ Thông tin ĐHQG, TPHCM
+            <br>
+            KP 6, Thủ Đức, Hồ Chí Minh, Việt Nam
+            <br>
+            P: (028) 372 52002
+        </p>
+        <p>
+            <b>Email: </b><a href="mailto:info@uit.edu.vn">info@uit.edu.vn</a><br>
+            <b>Website: </b><a href="http://uit.edu.vn">uit.edu.vn</a>
+            
+        </p>
+        <iframe class="map" src="https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d3918.2324288146738!2d106.80161941411598!3d10.86991839225808!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1svi!2s!4v1588878290282!5m2!1svi!2s" width="550" height="350" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
+
+    </div>
+    <div class="contact_form">
+        <h2 style="text-align: center;">
+            Liên hệ với chúng tôi
+        </h2>
+        <form action="{{ url_for('page', page=2) }}" method="post" style="width: 100%;">
+            {{ form.hidden_tag() }}
+            <table class="form-container">
+                <tr>
+                    <td>
+                        Họ và tên
+                    </td>
+                    <td>
+                        {{ form.name(class="form-control", size=50, required=true) }}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Địa chỉ email
+                    </td>
+                    <td>
+                        {{ form.email(class="form-control", type="email", size=50, required=true) }}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Số điện thoại
+                    </td>
+                    <td>
+                        {{ form.phone(class="form-control", type="phone", size=50, required=true) }}
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        Thông điệp
+                    </td>
+                    <td>
+                        {{ form.message(class="form-control", rows=5, column=50, required=true) }}
+                    </td>
+                    
+                </tr>
+                <tr>
+                    <td>
+
+                    </td>
+                    <td colspan="2">
+                        {{form.submit(class= "Submit_btn")}}
+                    </td>
+                </tr>
+            </table>
+        </form>
+        {% if errors %}
+            <div class="error-msg">
+                <span class="close-btn" onclick="this.parentNode.remove(); return false;">x</span>
+                {% if errors['name']%}
+                <br>{{errors['name'][0]}} <br>
+                {% endif%}
+                {% if errors['phone'] %}
+                <br>{{errors['phone'][0]}} <br>
+                {% endif%}
+                {% if errors['email'] %}
+                <br>{{errors['email'][0]}} <br>
+                {% endif%}
+            </div>
+        {% endif%}
+        {% if send and errors==False %}
+            <script>
+                alert('Chúng tôi đã tiếp nhận yêu cầu!')
+            </script>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,116 @@
+{% extends 'base.html' %}
+
+{% block title %}
+Page1()
+{% endblock %}
+
+{% block body %}
+<div class="container1">
+    <h2>
+        Products
+    </h2>
+    <h1>
+        Reading Data from a File
+    </h1>
+
+    {% if not uploaded %}
+        <form action="{{ url_for('page', page=1) }}" method="POST" enctype="multipart/form-data">
+            {{ form.hidden_tag() }}
+            {{ form.file() }}
+            {{ form.submit() }}
+        </form>
+    {% else %}
+        <table class="product_container">
+            <tr class="product_header">
+                <th class="product_id_header">
+                    STT
+                </th>
+                <th class="product_name_header">
+                    Tên sản phẩm
+                </th>
+                <th class="product_price_header">
+                    Giá
+                </th>
+                <th class="product_cond_header_header" style="text-align: justify;padding-left: 10px;">
+                    Tình trạng
+                </th>
+                <th class="product_brand_header" style="padding-left: 10px;">
+                    Thương hiệu
+                </th>
+                <th class="product_action_header">
+
+                </th>
+
+            </tr>
+            {% for row in filecontent %}
+                    <tr class="product_item">
+                        <td class="product_id_row">
+                            {{row[0]}}
+                        </td>
+                        <td class="product_name_row">
+                            <div style="display: flex;">
+                                <img style="display: flex; flex:1; max-width: 40%; height: 80%; padding: 20px 0;" src="{{row[6]}}" alt="product">
+                                <div style=" flex: 2; padding-left: 20px">
+                                    <div style="color: red; padding-top: 30px; padding-right: 10px">
+                                        <b>{{row[1]}}</b>
+                                    </div>
+                                    <div style="color: gray; padding-right: 10px">
+                                        <br>{{row[5]}}
+                                    </div>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="product_price_row">
+                            <b>{{row[2]}}</b>
+                        </td>
+                        <td class="product_cond_row">
+                            {% if row[4] is defined and row[4]|int > 0 %}
+                                <div style="text-align: center;">
+                                    <b>Còn hàng</b>
+                                </div>
+                            {% else %}
+                            <div style="color:red; text-align: center;">
+                                <b>Hết hàng</b>
+                            </div>
+                            {% endif %}
+                            {% if row[4]==' ' %}
+                                <div style="text-align: center;">
+                                    <br>( 0 )
+                                </div>
+                            {% else %}
+                                <div style="text-align: center;">
+                                    <br>({{row[4]|int}})
+                                </div>
+                            {% endif %}
+                            
+                           
+                        </td>
+                        <td class="product_brand_row" style="text-align: center;">
+                            {% if row[3]=='  ' %}
+                                <div>
+                                    NULL
+                                </div>
+                            {% else %}
+                                {{row[3]}}
+                            {% endif %}
+                        </td>
+                        <td class="product_action_row">
+                            {% if row[4]|int >0 %}
+                            <div >
+                                <a href="#" style="color: #366bb5; text-decoration: none;">
+                                Thêm vào giỏ hàng
+                                </a>
+                            </div>
+                            {% else %}
+                            <div style="color:gray">
+                                Thêm vào giỏ hàng
+                            </div>
+                            {% endif %}
+                        </td>
+
+                    </tr>
+            {% endfor %}
+        </table>
+    {% endif %}
+</div>
+{% endblock %}
