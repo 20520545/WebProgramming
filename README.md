@@ -1,3 +1,3 @@
 # WebProgramming
 
-COde of basic programming exercises.
+Code of basic programming exercises.
