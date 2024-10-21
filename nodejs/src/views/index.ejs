@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Monitor</title>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <link rel="stylesheet" href="/style.css" type="text/css">
+</head>
+<body>
+    <div style="margin: 20px">
+        <h1>Product Monitor</h1>
+    
+        <form id="productForm" style="padding-left: 20px; padding-right: 20px;">
+            <input type="text" id="name" placeholder="Product Name" required>
+            <input type="number" id="quantity" placeholder="Product's Quantity" required>
+            <input type="number" id="price" placeholder="Product's Price" required>
+            <br>
+            <button type="submit">Add Product</button>
+        </form>
+    
+        <h2>Products List</h2>
+        <table id="productTable">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Name</th>
+                    <th>Quantity</th>
+                    <th>Price</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+    
+        <script>
+            document.getElementById('productForm').addEventListener('submit', async function(e) {
+                e.preventDefault();
+                const name = document.getElementById('name').value;
+                const quantity = document.getElementById('quantity').value;
+                const price = document.getElementById('price').value;
+                await axios.post('/products', { name, quantity, price });
+                loadProducts();
+            });
+    
+            async function loadProducts() {
+                const response = await axios.get('/products');
+                const products = response.data;
+                const tbody = document.querySelector('#productTable tbody');
+                tbody.innerHTML = '';
+    
+                products.forEach(product => {
+                    const row = document.createElement('tr');
+                    row.innerHTML = `
+                        <td>${product._id}</td>
+                        <td>${product.name}</td>
+                        <td>${product.quantity}</td>
+                        <td>${product.price}</td>
+                        <td>
+                            <button onclick="deleteProduct('${product._id}')">Delete</button>
+                        </td>
+                    `;
+                    tbody.appendChild(row);
+                });
+            }
+    
+            async function deleteProduct(id) {
+                await axios.delete(`/products/${id}`);
+                loadProducts();
+            }
+    
+            // Load products when the page is loaded
+            loadProducts();
+        </script>
+    </div>
+
+</body>
+</html>
